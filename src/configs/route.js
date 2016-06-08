@@ -9,6 +9,10 @@ app.config(['$routeProvider', function ($routeProvider) {
             user: 'CurrentUser'
         }
     }).
+    when('/errors/:code', {
+        templateUrl: 'pages/error.html',
+        controller: 'ErrorCtrl'
+    }).
     otherwise({
         redirectTo: '/404'
     });

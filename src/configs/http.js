@@ -31,11 +31,8 @@ app.config(['$httpProvider', function ($httpProvider) {
                     }
 
                     config.origUrl = config.url;
-                    config.server = config.server || 'api';
 
-                    var host = API_SERVER[config.server];
-
-                    config.url = (config.url[0] === '/' ? host.substr(0, host.length - 1) : host) + config.url;
+                    config.url = (config.url[0] === '/' ? API_SERVER.substr(0, API_SERVER.length - 1) : API_SERVER) + config.url;
 
                     if (!config.cache) {
                         // avoid cache
