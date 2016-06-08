@@ -6,11 +6,13 @@ app.config(['$httpProvider', function ($httpProvider) {
         '$injector',
         '$timeout',
         'API_SERVER',
+        'ForbiddenException',
         function (
             $q,
             $injector,
             $timeout,
-            API_SERVER
+            API_SERVER,
+            ForbiddenException
         ) {
             return {
                 request: function (config) {
@@ -29,7 +31,7 @@ app.config(['$httpProvider', function ($httpProvider) {
                     }
 
                     config.origUrl = config.url;
-                    config.server = config.server || 'cms';
+                    config.server = config.server || 'api';
 
                     var host = API_SERVER[config.server];
 
@@ -59,7 +61,7 @@ app.config(['$httpProvider', function ($httpProvider) {
                     }
 
                     if (resp.status === 401)  {
-                        $injector.get('$location').replace('/login?service=' + encodeURIComponent(location.href));
+                        throw new ForbiddenException();
                     } else {
                         // next tick
                         $timeout(function () {

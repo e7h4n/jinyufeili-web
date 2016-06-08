@@ -11,42 +11,20 @@ app.constant('ForbiddenException', ForbiddenException);
 app.config([
     '$provide',
     'ForbiddenException',
-    '$injector',
     function (
         $provide,
-        ForbiddenException,
-        $injector
+        ForbiddenException
     ) {
         $provide.decorator('$exceptionHandler', [
             '$delegate',
             function ($delegate) {
-                var $location = null;
-                var $log = null;
 
                 return function (exception, cause) {
-                    if (!$location) {
-                        try {
-                            $location = $injector.get('$location');
-                        } catch (e) {
-                            $location = null;
-                        }
-                    }
-
-                    if (!$log) {
-                        try {
-                            $log = $injector.get('$log');
-                        } catch (e) {
-                            $log = null;
-                        }
-                    }
 
                     if (exception instanceof ForbiddenException) {
-                        var path = '/login?service=' + encodeURIComponent($location.absUrl());
-                        if ($location) {
-                            $location.replace(path);
-                        } else {
-                            window.location.replace(path);
-                        }
+                        var redirectUri = 'http://wx.jinyufeili.com/oauth?redirect=' + encodeURIComponent(location.href);
+                        var path = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx7be39b5916d09b51&redirect_uri=' + encodeURIComponent(redirectUri) + '&response_type=code&scope=snsapi_base&state=loginRedirect#wechat_redirect';
+                        location.replace(path);
                     } else {
                         $delegate(exception, cause);
                     }

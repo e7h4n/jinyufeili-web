@@ -1,5 +1,5 @@
 'use strict';
 
 app.controller('HomeCtrl', ['$scope', function ($scope) {
-    $scope.home = 'JYFL';
+    console[console.debug ? 'debug' : 'log']('-- ddd ----------------');
 }]);
