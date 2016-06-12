@@ -59,6 +59,8 @@ app.config(['$httpProvider', function ($httpProvider) {
 
                     if (resp.status === 401)  {
                         throw new ForbiddenException();
+                    } else if (resp.status === 403)  {
+                        return $q.reject(resp);
                     } else {
                         // next tick
                         $timeout(function () {
