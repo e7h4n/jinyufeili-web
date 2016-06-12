@@ -81,5 +81,5 @@ app.controller('UserBindCtrl', [
             $promise.then(function () {
                 $location.url('/users/' + $scope.formData.user.id);
             });
-        }
+        };
     }]);

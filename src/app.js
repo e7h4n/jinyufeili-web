@@ -13,7 +13,7 @@ $(function () {
     $.getJSON('/api/wechat/js_signature', {
         url: location.href
     }).success(function (resp) {
-        wx.config({
+        window.wx.config({
             appId: resp.appid,
             timestamp: resp.timestamp,
             nonceStr: resp.noncestr,
