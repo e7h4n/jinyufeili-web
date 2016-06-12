@@ -82,7 +82,7 @@ app.config(['$httpProvider', function ($httpProvider) {
                             if (resp.config && resp.config.statusText && resp.config.statusText[resp.status]) {
                                 $injector.get('Toast').info(resp.config.statusText[resp.status]);
                             } else {
-                                $injector.get('Toast').info('请求出错, 请返回重试');
+                                $injector.get('Toast').info('请求出错');
                             }
                         }, 25);
                     }
