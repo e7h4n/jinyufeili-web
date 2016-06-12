@@ -2,8 +2,7 @@
 
 app.config(['$routeProvider', function ($routeProvider) {
     var resolve = {
-        user: 'CurrentUser',
-        WechatSdk: 'WechatSdk'
+        user: 'CurrentUser'
     };
 
     $routeProvider.

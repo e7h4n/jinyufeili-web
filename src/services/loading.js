@@ -7,9 +7,11 @@ app.service('Loading', function () {
         info: function (message, $promise) {
             Loading.message = message;
 
-            $promise.finally(function () {
-                Loading.message = null;
-            });
+            if ($promise) {
+                $promise.finally(function () {
+                    Loading.message = null;
+                });
+            }
         }
     };
 

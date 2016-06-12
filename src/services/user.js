@@ -16,12 +16,16 @@ app.service('User', ['$resource', function ($resource) {
     });
 }]);
 
-app.service('CurrentUser', ['User', function (User) {
-    return User.current().$promise.then(function (user) {
+app.service('CurrentUser', ['User', 'Loading', function (User, Loading) {
+    var promise = User.current().$promise.then(function (user) {
         user.roles = user.groups.reduce(function (memo, curr) {
             memo[curr.name] = true;
             return memo;
         }, {});
         return user;
     });
+
+    Loading.info('数据加载中', promise);
+
+    return promise;
 }]);

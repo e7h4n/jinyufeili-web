@@ -7,6 +7,8 @@ app.directive('loading', ['Loading', function (Loading) {
         scope: {},
         link: function ($scope) {
             $scope.Loading = Loading;
+
+            $('#mainLoadingToast').hide();
         }
     };
 }]);
