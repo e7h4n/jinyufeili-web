@@ -22,8 +22,8 @@ app.config([
                 return function (exception, cause) {
 
                     if (exception instanceof ForbiddenException) {
-                        var redirectUri = 'http://wx.jinyufeili.com/oauth?redirect=' + encodeURIComponent(location.href);
-                        var path = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx7be39b5916d09b51&redirect_uri=' + encodeURIComponent(redirectUri) + '&response_type=code&scope=snsapi_base&state=loginRedirect#wechat_redirect';
+                        var redirectUri = 'https://m.jinyufeili.com/api/wechat/oauth2-callback?callback=' + encodeURIComponent(location.href);
+                        var path = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx7be39b5916d09b51&redirect_uri=' + encodeURIComponent(redirectUri) + '&response_type=code&scope=snsapi_userinfo&state=loginRedirect#wechat_redirect';
                         location.replace(path);
                     } else {
                         $delegate(exception, cause);

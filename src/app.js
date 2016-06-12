@@ -10,11 +10,36 @@ var app = angular.module(APP_MODULE_NAME, [
 window.app = app;
 
 $(function () {
-    document.body.innerHTML =
-        '<toast-list></toast-list>' +
-        '<div ng-view></div>';
-    document.body.setAttribute('ontouchstart', '');
+    $.getJSON('/api/wechat/js_signature', {
+        url: location.href
+    }).success(function (resp) {
+        wx.config({
+            appId: resp.appid,
+            timestamp: resp.timestamp,
+            nonceStr: resp.noncestr,
+            signature: resp.signature,
+            jsApiList: [
+                'onMenuShareTimeline',
+                'onMenuShareAppMessage',
+                'onMenuShareQQ',
+                'onMenuShareWeibo',
+                'onMenuShareQZone',
+                'getNetworkType',
+                'openLocation',
+                'getLocation',
+                'hideOptionMenu',
+                'showOptionMenu',
+                'hideMenuItems',
+                'showMenuItems',
+                'hideAllNonBaseMenuItem',
+                'showAllNonBaseMenuItem',
+                'closeWindow'
+            ]
+        });
+    });
+});
 
+$(function () {
     angular.bootstrap(document, [APP_MODULE_NAME]);
 });
 

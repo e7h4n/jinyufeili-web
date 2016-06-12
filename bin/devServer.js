@@ -17,6 +17,8 @@ var sourcemaps = require('gulp-sourcemaps');
 var tap = require('gulp-tap');
 var merge = require('merge-stream');
 var gutil = require('gulp-util');
+var fs = require('fs');
+var crypto = require('crypto');
 
 app.get('/seed.js', function (req, res) {
     res.set('Content-Type', 'text/javascript');
@@ -43,7 +45,7 @@ app.get('/seed.js', function (req, res) {
         }, function () {
             res.send(files.map(function (file) {
                 return 'document.write(\'<script src="' + file + '"></script>\');';
-            }).join('\n') + '\ndocument.write(\'<link rel="stylesheet" href="/app.css">;\')');
+            }).join('\n') + '\ndocument.write(\'<link rel="stylesheet" href="/app.css">\');');
         });
     }()));
 });
@@ -64,8 +66,21 @@ app.get('/app.css', function (req, res) {
         }));
 });
 
-app.use('/app.manifest', function (req, res) {
-    res.status(200).send('CACHE MANIFEST\nNETWORK:\n*');
+app.use('/app.manifest', function (req, res, next) {
+    fs.readFile(gulpfile.SRC + 'index.html', {
+        encoding: 'utf-8'
+    }, function (err, data) {
+        if (err) {
+            next(err);
+            return;
+        }
+
+        var md5sum = crypto.createHash('md5');
+        md5sum.update(data);
+        var hash = md5sum.digest('hex');
+
+        res.status(200).send('CACHE MANIFEST\n# ' + hash + '\nNETWORK:\n*');
+    });
 });
 
 app.use(serveStatic('src', {

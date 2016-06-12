@@ -67,13 +67,13 @@ app.config(['$httpProvider', function ($httpProvider) {
                             }
 
                             if (resp.config && resp.config.statusText && resp.config.statusText[resp.status]) {
-                                $injector.get('Toast').error(resp.config.statusText[resp.status]);
+                                $injector.get('Toast').info(resp.config.statusText[resp.status]);
                             } else if (resp && resp.data && resp.data.exceptionMessage) {
-                                $injector.get('Toast').error('Oops，请求出错，错误原因: ' + resp.data.exceptionMessage);
+                                $injector.get('Toast').info('请求出错');
                             } else if (resp && resp.data && resp.data.message) {
-                                $injector.get('Toast').error('Oops，请求出错，错误原因: ' + resp.data.message);
+                                $injector.get('Toast').info('请求出错');
                             } else {
-                                $injector.get('Toast').error('Oops，请求出错，错误代码: ' + resp.status);
+                                $injector.get('Toast').info('请求出错');
                             }
                         }, 25);
                     }

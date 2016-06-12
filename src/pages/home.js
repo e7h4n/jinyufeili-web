@@ -1,5 +1,7 @@
 'use strict';
 
-app.controller('HomeCtrl', ['$scope', function ($scope) {
-    console[console.debug ? 'debug' : 'log']('-- ddd ----------------');
+app.controller('HomeCtrl', ['$scope', 'user', 'UserGroup', function ($scope, user, UserGroup) {
+    $scope.user = user;
+
+    $scope.userGroups = UserGroup.query();
 }]);

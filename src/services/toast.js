@@ -1,9 +1,17 @@
 'use strict';
 
-app.service('Toast', function () {
-    var Toast = {};
+app.service('Toast', ['$timeout', function ($timeout) {
+    var Toast = {
+        message: null
+    };
 
-    Toast.error = console.error.bind(console);
+    Toast.info = function (message) {
+        Toast.message = message;
+
+        $timeout(function () {
+            Toast.message = null;
+        }, 2000);
+    };
 
     return Toast;
-});
+}]);
