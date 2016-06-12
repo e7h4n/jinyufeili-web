@@ -61,6 +61,8 @@ app.config(['$httpProvider', function ($httpProvider) {
                         throw new ForbiddenException();
                     } else if (resp.status === 403)  {
                         return $q.reject(resp);
+                    } else if (resp.status === 500 && resp.data && resp.data.exceptionMessage && resp.data.exceptionMessage.indexOf && resp.data.exceptionMessage.indexOf('CookieTheftException') !== -1) {
+                        throw new ForbiddenException();
                     } else {
                         // next tick
                         $timeout(function () {

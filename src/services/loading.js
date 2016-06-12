@@ -5,6 +5,8 @@ app.service('Loading', function () {
         message: null,
 
         info: function (message, $promise) {
+            $('#mainLoadingToast').hide();
+
             Loading.message = message;
 
             if ($promise) {
