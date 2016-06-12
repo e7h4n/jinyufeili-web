@@ -61,10 +61,19 @@ app.config(['$httpProvider', function ($httpProvider) {
                         throw new ForbiddenException();
                     } else if (resp.status === 403)  {
                         return $q.reject(resp);
-                    } else if (resp.status === 500 && resp.data && resp.data.exceptionMessage && resp.data.exceptionMessage.indexOf && resp.data.exceptionMessage.indexOf('CookieTheftException') !== -1) {
-                        throw new ForbiddenException();
                     } else {
                         // next tick
+                        var message = null;
+                        if (resp && resp.data && resp.data.exceptionMessage) {
+                            message = resp.data.exceptionMessage;
+                        } else if (resp && resp.data && resp.data.message) {
+                            message = resp.data.message;
+                        }
+
+                        if (resp.status === 500 && message !== null && message.indexOf && message.indexOf('CookieTheftException') !== -1) {
+                            throw new ForbiddenException();
+                        }
+
                         $timeout(function () {
                             if (processed) {
                                 return;
@@ -72,12 +81,8 @@ app.config(['$httpProvider', function ($httpProvider) {
 
                             if (resp.config && resp.config.statusText && resp.config.statusText[resp.status]) {
                                 $injector.get('Toast').info(resp.config.statusText[resp.status]);
-                            } else if (resp && resp.data && resp.data.exceptionMessage) {
-                                $injector.get('Toast').info('请求出错');
-                            } else if (resp && resp.data && resp.data.message) {
-                                $injector.get('Toast').info('请求出错');
                             } else {
-                                $injector.get('Toast').info('请求出错');
+                                $injector.get('Toast').info('请求出错, 请返回重试');
                             }
                         }, 25);
                     }
