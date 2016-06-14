@@ -12,6 +12,11 @@ app.service('User', ['$resource', function ($resource) {
             method: 'GET',
             url: '/api/users/free',
             isArray: true
+        },
+        queryUnbinded: {
+            method: 'GET',
+            url: '/api/users/unbinded',
+            isArray: true
         }
     });
 }]);

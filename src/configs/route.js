@@ -16,6 +16,11 @@ app.config(['$routeProvider', function ($routeProvider) {
         controller: 'UserGroupUserListCtrl',
         resolve: resolve
     }).
+    when('/users/unbinded', {
+        templateUrl: 'pages/user/unbindedList.html',
+        controller: 'UserUnbindListCtrl',
+        resolve: resolve
+    }).
     when('/users/bind', {
         templateUrl: 'pages/user/bind.html',
         controller: 'UserBindCtrl',

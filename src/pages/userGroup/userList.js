@@ -5,7 +5,9 @@ app.controller('UserGroupUserListCtrl', [
     'User',
     '$scope',
     '$routeParams',
-    function (UserGroup, User, $scope, $routeParams) {
+    'user',
+    function (UserGroup, User, $scope, $routeParams, user) {
+        $scope.requestUser = user;
         $scope.users = User.query({
             groupId: $routeParams.groupId
         });
