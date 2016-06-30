@@ -37,19 +37,19 @@
     <div class="weui_cells_tips">以上信息仅业主个人可见</div>
 </div>
 
-<div>
-    <div class="weui_cells_title">公共事务投票</div>
-    <div class="weui_cells weui_cells_access">
-        <a class="weui_cell" href="#/polls/{{poll.id}}" ng-repeat="poll in polls">
-            <div class="weui_cell_bd weui_cell_primary">
-                <p>{{poll.name}}</p>
-            </div>
-            <div class="weui_cell_ft">
-                {{poll.status | pollStatus}}
-            </div>
-        </a>
-    </div>
-</div>
+<!--<div>-->
+    <!--<div class="weui_cells_title">公共事务投票</div>-->
+    <!--<div class="weui_cells weui_cells_access">-->
+        <!--<a class="weui_cell" href="#/polls/{{poll.id}}" ng-repeat="poll in polls">-->
+            <!--<div class="weui_cell_bd weui_cell_primary">-->
+                <!--<p>{{poll.name}}</p>-->
+            <!--</div>-->
+            <!--<div class="weui_cell_ft">-->
+                <!--{{poll.status | pollStatus}}-->
+            <!--</div>-->
+        <!--</a>-->
+    <!--</div>-->
+<!--</div>-->
 
 <div ng-if="user.roles['筹备组']">
     <div class="weui_cells_title">筹备组功能</div>
