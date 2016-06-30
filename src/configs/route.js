@@ -46,11 +46,20 @@ app.config(['$routeProvider', function ($routeProvider) {
         controller: 'UserBindConfirmCtrl',
         resolve: resolve
     }).
+    when('/polls/:pollId', {
+        templateUrl: 'pages/poll/pollDetail.html',
+        controller: 'PollDetailCtrl',
+        controllerAs: 'ctrl',
+        resolve: resolve
+    }).
     when('/errors/:code', {
         templateUrl: 'pages/error.html',
-        controller: 'ErrorCtrl'
+        controller: 'ErrorCtrl',
+        controllerAs: 'ctrl'
     }).
     otherwise({
-        redirectTo: '/errors/404'
+        templateUrl: 'pages/error.html',
+        controller: 'ErrorCtrl',
+        controllerAs: 'ctrl'
     });
 }]);

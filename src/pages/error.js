@@ -1,6 +1,6 @@
 'use strict';
 
-app.controller('ErrorCtrl', ['$scope', '$routeParams', function ($scope, $routeParams) {
-    $scope.next = $routeParams.next;
-    $scope.code = $routeParams.code;
+app.controller('ErrorCtrl', ['$routeParams', '$location', function ($routeParams, $location) {
+    this.next = $routeParams.next || $location.url();
+    this.code = $routeParams.code || '404';
 }]);
