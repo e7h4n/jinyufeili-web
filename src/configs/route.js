@@ -57,6 +57,9 @@ app.config(['$routeProvider', function ($routeProvider) {
         controller: 'ErrorCtrl',
         controllerAs: 'ctrl'
     }).
+    when('/friend-links', {
+        templateUrl: 'pages/friendLink.html',
+    }).
     otherwise({
         templateUrl: 'pages/error.html',
         controller: 'ErrorCtrl',
