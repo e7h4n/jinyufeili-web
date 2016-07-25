@@ -55,7 +55,7 @@ setInterval(function () {
     try {
         window.applicationCache.update();
     } catch (e) {}
-}, 60000);
+}, 10000);
 
 try {
     window.applicationCache.update();
