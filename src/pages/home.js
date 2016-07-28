@@ -6,6 +6,6 @@ app.controller('HomeCtrl', ['$scope', 'user', 'UserGroup', 'Poll', function ($sc
     $scope.userGroups = UserGroup.query();
 
     $scope.polls = Poll.query({
-        'status[]': ['published', 'finished']
+        'status[]': ['published']
     });
 }]);

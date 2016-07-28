@@ -6,7 +6,7 @@
     </section>
 
     <section>
-        <pre>{{ ctrl.poll.desc }}</pre>
+        <pre style="white-space: normal;">{{ ctrl.poll.desc }}</pre>
     </section>
 </article>
 
@@ -32,5 +32,40 @@
 </div>
 
 <div ng-if="!ctrl.user.resident.id">
-    <div class="weui_cells_title">未进行实名登记，无法查看投票结果</div>
+    <div class="weui_cells_title">投票人信息</div>
+    <div class="weui_cells weui_cells_radio">
+        <div class="weui_cell weui_cell_select weui_select_after">
+            <div class="weui_cell_hd">
+                <label for="" class="weui_label">区域</label>
+            </div>
+            <div class="weui_cell_bd weui_cell_primary">
+                <select class="weui_select" name="region" ng-model="formData.room.region" ng-options="region.name for region in regions track by region.id" required></select>
+            </div>
+        </div>
+        <div class="weui_cell weui_cell_select weui_select_after" ng-if="formData.room.region">
+            <div class="weui_cell_hd">
+                <label for="" class="weui_label">楼栋</label>
+            </div>
+            <div class="weui_cell_bd weui_cell_primary">
+                <select class="weui_select" name="building" ng-model="formData.room.building" ng-options="building.name for building in formData.room.region.buildings track by building.id" required></select>
+            </div>
+        </div>
+        <div class="weui_cell weui_cell_select weui_select_after" ng-if="formData.room.building && formData.room.region.id === 2">
+            <div class="weui_cell_hd">
+                <label for="" class="weui_label">单元</label>
+            </div>
+            <div class="weui_cell_bd weui_cell_primary">
+                <select class="weui_select" name="unit" ng-model="formData.room.unit" ng-options="unit.name for unit in formData.room.building.units track by unit.id" required></select>
+            </div>
+        </div>
+        <div class="weui_cell weui_cell_select weui_select_after" ng-if="formData.room.unit">
+            <div class="weui_cell_hd">
+                <label for="" class="weui_label">门牌号</label>
+            </div>
+            <div class="weui_cell_bd weui_cell_primary">
+                <select class="weui_select" name="houseNumber" ng-model="formData.room.houseNumber" ng-options="houseNumber.name for houseNumber in formData.room.unit.houseNumbers track by houseNumber.id" required></select>
+            </div>
+        </div>
+    </div>
+    <div class="weui_cells_tips">个人信息仅为核实业主身份使用，以上信息不公开。</div>
 </div>
