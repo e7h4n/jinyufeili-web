@@ -10,7 +10,7 @@ var concat = require('gulp-concat');
 var templateCache = require('gulp-angular-templatecache');
 var merge = require('merge-stream');
 var order = require('gulp-order');
-var staticFiles = require('./index.json');
+var vendorResourceList = require('./loader.json');
 var rev = require('gulp-rev');
 var override = require('gulp-rev-css-url');
 var revCollector = require('gulp-rev-collector');
@@ -33,9 +33,13 @@ var rework = require('rework');
 var reworkPluginURL = require('rework-plugin-url');
 var through2 = require('through2');
 var _ = require('underscore');
+var pkg = require('./package.json');
+var add = require('gulp-add-src').append;
 
-var CDN = gutil.env.cdn || '/';
-if (CDN[CDN.length - 1] !== '/') {
+var appName = pkg.name.replace(/-/g, '.');
+
+var CDN = gutil.env.cdn || '';
+if (CDN.length > 0 && CDN[CDN.length - 1] !== '/') {
     CDN = CDN + '/';
 }
 debug('init')('CDN=%s', CDN);
@@ -52,7 +56,8 @@ var tapDebug = function (name, showContent) {
 };
 
 var BUILD = 'dist/';
-var SRC = 'src/';
+var SRC = '';
+var BASE = SRC || './';
 
 function makeHashKey(cache) {
     return function (file) {
@@ -63,33 +68,39 @@ function makeHashKey(cache) {
 }
 
 function scripts() {
-    var scriptFiles = merge(gulp.src(staticFiles.scripts, {
-        base: SRC
+    var scriptFiles = merge(gulp.src(vendorResourceList.scripts, {
+        base: BASE
     }), gulp.src([
         SRC + '**/*.js',
-        '!' + SRC + 'bower_components/**/*.*',
-        '!' + SRC + 'seed.js'
+        '!' + SRC + 'node_modules/**/*.*',
+        '!' + SRC + 'bin/**/*.*',
+        '!' + SRC + '**/gulpfile.js',
+        '!' + BUILD + '**/*.*',
     ], {
-        base: SRC
-    }));
+        base: BASE
+    }))
+    .pipe(tapDebug('script'));
 
     var template = gulp.src([
         SRC + '**/*.html',
-        '!' + SRC + 'bower_components/**/*.*',
+        '!' + SRC + 'node_modules/**/*.*',
+        '!' + BUILD + '**/*.*',
         '!' + SRC + 'index.html'
-    ]).pipe(templateCache('templates.js', {
-        module: 'tutor-crm-web'
+    ])
+    .pipe(tapDebug('tmpl'))
+    .pipe(templateCache('templates.js', {
+        module: appName
     }));
 
     return merge(scriptFiles, template)
-        .pipe(order(staticFiles.scripts.concat([
-            SRC + 'app.js',
-            SRC + 'ngImgCrop/ng-img-crop.js',
+        .pipe(order(vendorResourceList.scripts.concat([
+            SRC + 'loader.js',
             SRC + '**/*.js',
             'templates.js'
         ]), {
-            base: './'
+            base: BASE
         }))
+        .pipe(tapDebug('script'))
         .pipe(fileCache(uglify(), {
             key: makeHashKey('uglify')
         }))
@@ -100,29 +111,31 @@ function scripts() {
 }
 
 function styles() {
-    return gulp.src(SRC + 'app.less')
+    return gulp.src(SRC + 'loader.less')
         .pipe(less({
             lint: true,
             noIeCompat: true,
             relativeUrls: true,
             plugins: [cleanCSS]
         }))
+        .pipe(add(vendorResourceList.styles))
         .pipe(concat({
             path: 'app.css'
         }))
-        .pipe(tapDebug('styles'));
+        .pipe(tapDebug('style'));
 }
 
 function images() {
     var allImages =  gulp.src([
-        '!' + SRC + 'bower_components/**/*.*',
+        '!' + SRC + 'node_modules/**/*.*',
+        '!' + BUILD + '**/*.*',
         SRC + '**/*.png',
         SRC + '**/*.jpg',
         SRC + '**/*.gif',
         SRC + '**/*.svg',
         SRC + '**/*.ico'
     ], {
-        base: SRC
+        base: BASE
     });
 
     var cssImages = styles()
@@ -134,13 +147,14 @@ function images() {
                     url = url.substr(0, url.indexOf('?'));
                 }
                 files.push(SRC + url);
+                return url;
             }));
 
             files = _.uniq(files);
             var self = this;
 
             gulp.src(files, {
-                base: SRC
+                base: BASE
             }).pipe(through2.obj(function (chunk, enc, cb) {
                 self.push(chunk);
                 cb();
@@ -159,9 +173,10 @@ gulp.task('jshint', function () {
     return gulp.src([
         SRC + '**/*.js',
         'gulpfile.js',
-        '!' + SRC + 'bower_components/**/*.js',
+        '!' + SRC + 'node_modules/**/*.js',
+        '!' + BUILD + '**/*.*',
     ], {
-        base: SRC
+        base: BASE
     })
         .pipe(fileCache(jshint(), {
             success: function (jshintedFile) {
@@ -180,7 +195,7 @@ gulp.task('server', function () {
     gulp.watch([SRC + '**/*.js', 'gulpfile.js'], ['jshint']);
 
     gulp.watch(SRC + '**/*.less').on('change', function () {
-        gulp.src(SRC + 'app.less')
+        gulp.src(SRC + 'loader.less')
             .pipe(sourcemaps.init())
             .pipe(less({
                 lint: true,
@@ -193,24 +208,24 @@ gulp.task('server', function () {
 
     gulp.watch([SRC + '**/*.js', SRC + '**/*.html']).on('change', function (evt) {
         gulp.src(evt.path, {
-            base: SRC
+            base: BASE
         }).pipe(livereload());
     });
 });
 
 gulp.task('copy', ['clean'], function () {
     return gulp.src(SRC + 'index.html', {
-        base: SRC
+        base: BASE
     }).pipe(gulp.dest(BUILD));
 });
 
 gulp.task('build', ['clean'], function () {
     var allFiles = merge(scripts(), styles(), images())
-        .pipe(tapDebug('buildList'))
+        .pipe(tapDebug('src'))
         .pipe(rev())
         .pipe(override())
         .pipe(gulp.dest(BUILD))
-        .pipe(tapDebug('build'));
+        .pipe(tapDebug('dist'));
 
     var revManifest = allFiles
         .pipe(rev.manifest())
@@ -224,8 +239,8 @@ gulp.task('build', ['clean'], function () {
             file.contents = new Buffer(JSON.stringify(content, null, 4));
         }));
 
-    var seed = merge(revManifest, gulp.src(SRC + 'seed.js', {
-        base: SRC
+    var seed = merge(revManifest, gulp.src(SRC + 'index.html', {
+        base: BASE
     }))
         .pipe(tapDebug('revManifest', true))
         .pipe(revCollector())
@@ -262,4 +277,5 @@ gulp.task('default', ['jshint', 'copy', 'build']);
 
 exports.CDN = CDN;
 exports.SRC = SRC;
+exports.BASE = BASE;
 exports.BUILD = BUILD;

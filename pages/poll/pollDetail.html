@@ -1,0 +1,108 @@
+<article class="weui_article" style="padding-bottom: 0px;">
+    <h1>{{ctrl.poll.name}}</h1>
+
+    <section ng-if="ctrl.poll.status === 'finished'">
+        本次投票已结束
+    </section>
+
+    <section>
+        <pre style="white-space: normal;">{{ ctrl.poll.desc }}</pre>
+    </section>
+</article>
+
+<div ng-if="ctrl.user.resident.id">
+    <div ng-if="ctrl.poll.status === 'finished'">
+        <div ng-if="ctrl.voteSheet.voted">
+            <div class="weui_cells_title">我的投票结果</div>
+            <div class="weui_cells" style="margin-top: 0px;">
+                <div class="weui_cell" ng-repeat="question in ctrl.voteSheet.questions">
+                    <div class="weui_cell_bd weui_cell_primary">
+                        <p>{{question.content}}</p>
+                    </div>
+                    <div class="weui_cell_ft">
+                        {{question.result | questionResult}}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div ng-if="ctrl.user.resident.id && (!ctrl.voteSheet.id || !ctrl.voteSheet.voted)">
+            <div class="weui_cells_title">我的投票结果: 未参与</div>
+        </div>
+    </div>
+</div>
+
+<form name="form" novalidate ng-submit="ctrl.submit()">
+    <div>
+        <div class="weui_cells_title">表决项</div>
+        <div class="weui_cells weui_cells_radio">
+            <div ng-repeat="question in ctrl.poll.questions track by question.id" class="weui_cell weui_cell_select weui_select_after">
+                <div class="weui_cell_bd weui_cell_primary">
+                    {{question.content}}
+                </div>
+                <div class="weui_cell_ft">
+                    <select name="question{{question.id}}" class="weui_select" ng-model="ctrl.formData.questionAnswer[question.id]" ng-options="answer.name for answer.value in ctrl.answers track by answer.value" required></select>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div ng-if="!ctrl.user.resident.id">
+        <div class="weui_cells_title">投票人信息</div>
+        <div class="weui_cells weui_cells_radio">
+            <div class="weui_cell">
+                <div class="weui_cell_hd">
+                    <label class="weui_label" for="name">姓名</label>
+                </div>
+                <div class="weui_cell_bd weui_cell_primary">
+                    <input class="weui_input" type="text" required name="name" ng-model="ctrl.formData.resident.name" id="name">
+                </div>
+            </div>
+            <div class="weui_cell">
+                <div class="weui_cell_hd">
+                    <label class="weui_label" for="mobilePhone">手机号</label>
+                </div>
+                <div class="weui_cell_bd weui_cell_primary">
+                    <input class="weui_input" type="tel" ng-pattern="/\d{11}/" name="mobilePhone" ng-model="ctrl.formData.resident.mobilePhone" id="mobilePhone">
+                </div>
+            </div>
+            <div class="weui_cell weui_cell_select weui_select_after">
+                <div class="weui_cell_hd">
+                    <label for="" class="weui_label">区域</label>
+                </div>
+                <div class="weui_cell_bd weui_cell_primary">
+                    <select class="weui_select" name="region" ng-model="ctrl.formData.room.region" ng-options="region.name for region in ctrl.regions track by region.id" required></select>
+                </div>
+            </div>
+            <div class="weui_cell weui_cell_select weui_select_after" ng-if="ctrl.formData.room.region">
+                <div class="weui_cell_hd">
+                    <label for="" class="weui_label">楼栋</label>
+                </div>
+                <div class="weui_cell_bd weui_cell_primary">
+                    <select class="weui_select" name="building" ng-model="ctrl.formData.room.building" ng-options="building.name for building in ctrl.formData.room.region.buildings track by building.id" required></select>
+                </div>
+            </div>
+            <div class="weui_cell weui_cell_select weui_select_after" ng-if="ctrl.formData.room.building && ctrl.formData.room.region.id === 2">
+                <div class="weui_cell_hd">
+                    <label for="" class="weui_label">单元</label>
+                </div>
+                <div class="weui_cell_bd weui_cell_primary">
+                    <select class="weui_select" name="unit" ng-model="ctrl.formData.room.unit" ng-options="unit.name for unit in ctrl.formData.room.building.units track by unit.id" required></select>
+                </div>
+            </div>
+            <div class="weui_cell weui_cell_select weui_select_after" ng-if="ctrl.formData.room.unit">
+                <div class="weui_cell_hd">
+                    <label for="" class="weui_label">门牌号</label>
+                </div>
+                <div class="weui_cell_bd weui_cell_primary">
+                    <select class="weui_select" name="houseNumber" ng-model="ctrl.formData.room.houseNumber" ng-options="houseNumber.name for houseNumber in ctrl.formData.room.unit.houseNumbers track by houseNumber.id" required></select>
+                </div>
+            </div>
+        </div>
+        <div class="weui_cells_tips">个人信息仅为核实业主身份使用，以上信息不公开。</div>
+    </div>
+
+    <div class="weui_btn_area">
+        <button class="weui_btn weui_btn_primary" type="submit" ng-disabled="!form.$valid" ng-class="{weui_btn_disabled: !form.$valid}">提交</button>
+    </div>
+</form>

@@ -6,7 +6,7 @@ var express = require('express');
 var app = express();
 var serveStatic = require('serve-static');
 var gulp = require('gulp');
-var staticFiles = require('../index.json');
+var vendorResourceList = require('../loader.json');
 var gulpfile = require('../gulpfile');
 var order = require('gulp-order');
 var through = require('through');
@@ -19,25 +19,44 @@ var merge = require('merge-stream');
 var gutil = require('gulp-util');
 var fs = require('fs');
 var crypto = require('crypto');
+var debug = require('debug');
+var add = require('gulp-add-src').append;
+var concat = require('gulp-concat');
 
-app.get('/seed.js', function (req, res) {
+var tapDebug = function (name, showContent) {
+    var logger = debug(name);
+    return tap(function (file) {
+        if (showContent) {
+            logger(file.path, file.contents.toString().substr(0, 1024));
+        } else {
+            logger(file.path);
+        }
+    });
+};
+
+app.get('/app.js', function (req, res) {
     res.set('Content-Type', 'text/javascript');
 
-    merge(gulp.src(staticFiles.scripts, {
-        read: false
+    merge(gulp.src(vendorResourceList.scripts, {
+        read: false,
+        base: gulpfile.BASE
     }), gulp.src([
         gulpfile.SRC + '**/*.js',
-        '!' + gulpfile.SRC + 'bower_components/**/*.*',
-        '!' + gulpfile.SRC + 'seed.js'
+        '!' + gulpfile.SRC + 'node_modules/**/*.*',
+        '!' + gulpfile.SRC + 'bin/**/*.*',
+        '!' + gulpfile.SRC + '**/gulpfile.js',
+        '!' + gulpfile.BUILD + '**/*.*',
     ], {
+        base: gulpfile.BASE,
         read: false
-    })).pipe(order(staticFiles.scripts.concat([
-        gulpfile.SRC + 'app.js',
-        gulpfile.SRC + 'ngImgCrop/ng-img-crop.js',
+    }))
+    .pipe(order(vendorResourceList.scripts.concat([
+        gulpfile.SRC + 'loader.js',
         gulpfile.SRC + '**/*.js'
     ]), {
-        base: './'
+        base: gulpfile.BASE
     }))
+    .pipe(tapDebug('script'))
     .pipe((function () {
         var files = [];
         return through(function (file) {
@@ -45,7 +64,7 @@ app.get('/seed.js', function (req, res) {
         }, function () {
             res.send(files.map(function (file) {
                 return 'document.write(\'<script src="' + file + '"></script>\');';
-            }).join('\n') + '\ndocument.write(\'<link rel="stylesheet" href="/app.css">\');');
+            }).join('\n'));
         });
     }()));
 });
@@ -53,13 +72,16 @@ app.get('/seed.js', function (req, res) {
 app.get('/app.css', function (req, res) {
     res.set('Content-Type', 'text/css');
 
-    gulp.src(gulpfile.SRC + 'app.less')
+    gulp.src(gulpfile.SRC + 'loader.less')
         .pipe(sourcemaps.init())
         .pipe(less({
             lint: true,
             noIeCompat: true,
             relativeUrls: true
         }))
+        .pipe(add(vendorResourceList.styles))
+        .pipe(tapDebug('style'))
+        .pipe(concat('app.css'))
         .pipe(sourcemaps.write())
         .pipe(tap(function (file) {
             res.send(file.contents);
@@ -83,7 +105,7 @@ app.use('/app.manifest', function (req, res, next) {
     });
 });
 
-app.use(serveStatic('src', {
+app.use(serveStatic(gulpfile.BASE, {
     index: ['index.html']
 }));
 
