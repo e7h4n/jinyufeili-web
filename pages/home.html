@@ -1,77 +1,73 @@
-<div ng-if="user.resident">
-    <div class="weui_cells_title">个人信息</div>
-    <div class="weui_cells">
-        <div class="weui_cell">
-            <div class="weui_cell_bd weui_cell_primary">
-                <p>业主姓名</p>
-            </div>
-            <div class="weui_cell_ft">
-                {{ user.resident.name }}
-            </div>
+<div class="weui_cells_title">个人信息</div>
+<div class="weui_cells">
+    <div class="weui_cell">
+        <div class="weui_cell_bd weui_cell_primary">
+            <p>业主姓名</p>
         </div>
-        <div class="weui_cell">
-            <div class="weui_cell_bd weui_cell_primary">
-                <p>联系方式</p>
-            </div>
-            <div class="weui_cell_ft">
-                {{ user.resident.mobilePhone }}
-            </div>
-        </div>
-        <div class="weui_cell">
-            <div class="weui_cell_bd weui_cell_primary">
-                <p>门牌号</p>
-            </div>
-            <div class="weui_cell_ft">
-                {{ user.room | room }}
-            </div>
-        </div>
-        <div class="weui_cell">
-            <div class="weui_cell_bd weui_cell_primary">
-                <p>投票序号</p>
-            </div>
-            <div class="weui_cell_ft">
-                {{ user.resident.voteId }}
-            </div>
+        <div class="weui_cell_ft">
+            {{ user.resident.name }}
         </div>
     </div>
-    <div class="weui_cells_tips">以上信息仅业主个人可见</div>
-
-    <div>
-        <div class="weui_cells_title">公共事务投票</div>
-        <div class="weui_cells weui_cells_access">
-            <a class="weui_cell" href="#/polls/{{poll.id}}" ng-repeat="poll in polls">
-                <div class="weui_cell_bd weui_cell_primary">
-                    <p>{{poll.name}}</p>
-                </div>
-                <div class="weui_cell_ft">
-                    {{poll.status | pollStatus}}
-                </div>
-            </a>
+    <div class="weui_cell">
+        <div class="weui_cell_bd weui_cell_primary">
+            <p>联系方式</p>
+        </div>
+        <div class="weui_cell_ft">
+            {{ user.resident.mobilePhone }}
         </div>
     </div>
-
-    <div ng-if="!user.roles['筹备组']">
-        <div class="weui_cells weui_cells_access">
-            <a class="weui_cell" href="#/groups/1/users">
-                <div class="weui_cell_bd weui_cell_primary">
-                    <p>筹备组成员</p>
-                </div>
-                <div class="weui_cell_ft">
-                </div>
-            </a>
+    <div class="weui_cell">
+        <div class="weui_cell_bd weui_cell_primary">
+            <p>门牌号</p>
+        </div>
+        <div class="weui_cell_ft">
+            {{ user.room | room }}
+        </div>
+    </div>
+    <div class="weui_cell">
+        <div class="weui_cell_bd weui_cell_primary">
+            <p>投票序号</p>
+        </div>
+        <div class="weui_cell_ft">
+            {{ user.resident.voteId }}
+        </div>
+    </div>
+    <div class="weui_cell">
+        <div class="weui_cell_bd weui_cell_primary">
+            <p>认证状态</p>
+        </div>
+        <div class="weui_cell_ft">
+            <span ng-if="user.resident.verified">已认证</span>
+            <span ng-if="!user.resident.verified">等待人工审核</span>
         </div>
     </div>
 </div>
+<div class="weui_cells_tips">以上信息仅业主个人可见</div>
+<div class="weui_cells_tips" ng-if="!user.resident.verified">请等待筹备组成员对您的个人身份进行认证</div>
 
-<div class="weui_msg" ng-if="!user.resident">
-    <div class="weui_icon_area"><i class="weui_icon_msg weui_icon_info"></i></div>
-    <div class="weui_text_area">
-        <h2 class="weui_msg_title">翡丽铂庭小区公共事务投票</h2>
-        <p class="weui_msg_desc">请选择要参与的议题</p>
-    </div>
-    <div class="weui_opr_area">
-        <p class="weui_btn_area">
-            <a class="weui_btn weui_btn_primary" href="#/polls/{{poll.id}}" ng-repeat="poll in polls">{{poll.name}}</a>
-        </p>
+<!--<div>-->
+    <!--<div class="weui_cells_title">公共事务投票</div>-->
+    <!--<div class="weui_cells weui_cells_access">-->
+        <!--<a class="weui_cell" href="#/polls/{{poll.id}}" ng-repeat="poll in polls">-->
+            <!--<div class="weui_cell_bd weui_cell_primary">-->
+                <!--<p>{{poll.name}}</p>-->
+            <!--</div>-->
+            <!--<div class="weui_cell_ft">-->
+                <!--{{poll.status | pollStatus}}-->
+            <!--</div>-->
+        <!--</a>-->
+    <!--</div>-->
+<!--</div>-->
+
+<div ng-if="!user.roles['筹备组']">
+    <div class="weui_cells weui_cells_access">
+        <a class="weui_cell" href="#/groups/1/users">
+            <div class="weui_cell_bd weui_cell_primary">
+                <p>筹备组成员</p>
+            </div>
+            <div class="weui_cell_ft">
+            </div>
+        </a>
     </div>
 </div>
+

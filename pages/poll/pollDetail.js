@@ -5,10 +5,9 @@ app.controller('PollDetailCtrl', [
     '$routeParams',
     'VoteSheet',
     'user',
-    'REGION',
     '$scope',
     'ANSWER',
-    function (Poll, $routeParams, VoteSheet, user, REGION, $scope, ANSWER) {
+    function (Poll, $routeParams, VoteSheet, user, $scope, ANSWER) {
         var ctx = this;
         ctx.poll = Poll.get({
             pollId: $routeParams.pollId
@@ -21,8 +20,6 @@ app.controller('PollDetailCtrl', [
         ctx.voteSheet.$promise.catch(function (xhr) {
             xhr.processed(404);
         });
-
-        ctx.regions = REGION;
 
         ctx.user = user;
 
@@ -46,11 +43,5 @@ app.controller('PollDetailCtrl', [
             }
             console[console.debug ? 'debug' : 'log']("ctx.formData:", ctx.formData);
         };
-
-        $scope.$watch('ctrl.formData.room.building', function (building) {
-            if (building && ctx.formData.room.region && ctx.formData.room.region.id === 1) {
-                ctx.formData.room.unit = building.units[0];
-            }
-        });
     }
 ]);

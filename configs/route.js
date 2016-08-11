@@ -21,6 +21,11 @@ app.config(['$routeProvider', function ($routeProvider) {
         controller: 'UserUnbindListCtrl',
         resolve: resolve
     }).
+    when('/users/current/bind', {
+        templateUrl: 'pages/user/currentUserBind.html',
+        controller: 'CurrentUserBindCtrl',
+        controllerAs: 'ctrl'
+    }).
     when('/users/bind', {
         templateUrl: 'pages/user/bind.html',
         controller: 'UserBindCtrl',

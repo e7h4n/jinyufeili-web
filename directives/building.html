@@ -1,0 +1,8 @@
+<div class="weui_cell weui_cell_select weui_select_after" ng-show="region">
+    <div class="weui_cell_hd">
+        <label for="" class="weui_label">楼栋</label>
+    </div>
+    <div class="weui_cell_bd weui_cell_primary">
+        <select class="weui_select" name="building" ng-model="building" ng-options="building.name for building in buildings track by building.id" required></select>
+    </div>
+</div>

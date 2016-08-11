@@ -48,6 +48,7 @@
     "eventemitter2": "^2.0.1",
     "font-awesome": "^4.6.3",
     "jquery": "~2.2.4",
+    "lodash": "^4.14.2",
     "sprintf": "^0.1.5",
     "weui": "^0.4.3"
   },

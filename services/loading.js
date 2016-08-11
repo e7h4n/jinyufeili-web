@@ -1,6 +1,6 @@
 'use strict';
 
-app.service('Loading', function () {
+app.service('Loading', ['$timeout', function ($timeout) {
     var Loading = {
         message: null,
 
@@ -13,9 +13,13 @@ app.service('Loading', function () {
                 $promise.finally(function () {
                     Loading.message = null;
                 });
+            } else {
+                $timeout(function () {
+                    Loading.message = null;
+                }, 2000);
             }
         }
     };
 
     return Loading;
-});
+}]);

@@ -21,7 +21,7 @@ app.service('User', ['$resource', function ($resource) {
     });
 }]);
 
-app.service('CurrentUser', ['User', 'Loading', function (User, Loading) {
+app.service('CurrentUser', ['User', 'Loading', 'Unauthroized', function (User, Loading, Unauthroized) {
     var promise = User.current().$promise.then(function (user) {
         user.roles = user.groups.reduce(function (memo, curr) {
             memo[curr.name] = true;
@@ -32,5 +32,10 @@ app.service('CurrentUser', ['User', 'Loading', function (User, Loading) {
 
     Loading.info('数据加载中', promise);
 
-    return promise;
+    return promise.then(function (user) {
+        if (!user.resident || !user.resident.id) {
+            throw new Unauthroized();
+        }
+        return user;
+    });
 }]);

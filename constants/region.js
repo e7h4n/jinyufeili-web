@@ -1562,7 +1562,6 @@ app.value('REGION', [{
             id: 1,
             name: '一单元',
             houseNumbers: [{
-            }, {
                 id: 201,
                 name: '201'
             }, {
@@ -1597,7 +1596,6 @@ app.value('REGION', [{
             id: 2,
             name: '二单元',
             houseNumbers: [{
-            }, {
                 id: 201,
                 name: '201'
             }, {
