@@ -16,7 +16,6 @@
   "undef": true,
   "unused": true,
   "trailing": true,
-  "maxparams": 3,
   "globals": true,
   "browser": true,
   "-W117": true,

@@ -19,19 +19,9 @@ app.directive('verifyPhone', [
                 var WAIT_SEC = 60;
                 $scope.formData = {};
 
-                send();
-
-                $scope.submit = function () {
-                    $scope.onSubmit({
-                        verifyCode: $scope.formData.verifyCode
-                    });
-                };
-
-                $scope.resend = send;
-
                 function countdown() {
                     $scope.countdown = WAIT_SEC - Math.round((Date.now() - start) / 1000);
-                    if (cancelPromise != null) {
+                    if (cancelPromise !== null) {
                         $timeout.cancel(cancelPromise);
                     }
 
@@ -60,6 +50,16 @@ app.directive('verifyPhone', [
                         return xhr.processed(409);
                     });
                 }
+
+                send();
+
+                $scope.submit = function () {
+                    $scope.onSubmit({
+                        verifyCode: $scope.formData.verifyCode
+                    });
+                };
+
+                $scope.resend = send;
             }
         };
     }

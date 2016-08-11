@@ -12,16 +12,6 @@ app.directive('building', [
             require: 'ngModel',
             templateUrl: 'directives/building.html',
             link: function ($scope, $elem, $attrs, ngModel) {
-                ngModel.$formatters.push(formatter);
-
-                $scope.$watch('building.id', function (val) {
-                    ngModel.$setViewValue(val || 0);
-                });
-
-                $scope.$watchGroup(['region'], function () {
-                    formatter($scope.building ? $scope.building.id : 0);
-                });
-
                 function formatter(val) {
                     if ($scope.region) {
                         $scope.buildings = _.findWhere(REGION, {
@@ -42,6 +32,16 @@ app.directive('building', [
 
                     return val;
                 }
+
+                ngModel.$formatters.push(formatter);
+
+                $scope.$watch('building.id', function (val) {
+                    ngModel.$setViewValue(val || 0);
+                });
+
+                $scope.$watchGroup(['region'], function () {
+                    formatter($scope.building ? $scope.building.id : 0);
+                });
             }
         };
     }

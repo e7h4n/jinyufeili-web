@@ -41,7 +41,6 @@ app.controller('PollDetailCtrl', [
                     unit: ctx.formData.unit.id
                 };
             }
-            console[console.debug ? 'debug' : 'log']("ctx.formData:", ctx.formData);
         };
     }
 ]);

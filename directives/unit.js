@@ -13,19 +13,6 @@ app.directive('unit', [
             require: 'ngModel',
             templateUrl: 'directives/unit.html',
             link: function ($scope, $elem, $attrs, ngModel) {
-                $scope.regions = REGION;
-
-                ngModel.$formatters.push(formatter);
-
-                $scope.$watch('unit.id', function (val) {
-                    console[console.debug ? 'debug' : 'log']("val:", val);
-                    ngModel.$setViewValue(val || 0);
-                });
-
-                $scope.$watchGroup(['region', 'building'], function () {
-                    formatter($scope.unit ? $scope.unit.id : 0);
-                });
-
                 function formatter(val) {
                     if ($scope.region && $scope.building) {
                         $scope.units = _.findWhere(_.findWhere(REGION, {
@@ -51,6 +38,18 @@ app.directive('unit', [
 
                     return val;
                 }
+
+                $scope.regions = REGION;
+
+                ngModel.$formatters.push(formatter);
+
+                $scope.$watch('unit.id', function (val) {
+                    ngModel.$setViewValue(val || 0);
+                });
+
+                $scope.$watchGroup(['region', 'building'], function () {
+                    formatter($scope.unit ? $scope.unit.id : 0);
+                });
             }
         };
     }

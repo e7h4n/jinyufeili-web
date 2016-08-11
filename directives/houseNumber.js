@@ -13,18 +13,6 @@ app.directive('houseNumber', [
             require: 'ngModel',
             templateUrl: 'directives/houseNumber.html',
             link: function ($scope, $elem, $attrs, ngModel) {
-                $scope.regions = REGION;
-
-                ngModel.$formatters.push(formatter);
-
-                $scope.$watch('houseNumber.id', function (val) {
-                    ngModel.$setViewValue(val || 0);
-                });
-
-                $scope.$watchGroup(['region', 'building', 'unit'], function () {
-                    formatter($scope.houseNumber ? $scope.houseNumber.id : 0);
-                });
-
                 function formatter(val) {
                     if ($scope.region && $scope.building && $scope.unit) {
                         $scope.houseNumbers = _.findWhere(_.findWhere(_.findWhere(REGION, {
@@ -48,6 +36,18 @@ app.directive('houseNumber', [
 
                     return val;
                 }
+
+                $scope.regions = REGION;
+
+                ngModel.$formatters.push(formatter);
+
+                $scope.$watch('houseNumber.id', function (val) {
+                    ngModel.$setViewValue(val || 0);
+                });
+
+                $scope.$watchGroup(['region', 'building', 'unit'], function () {
+                    formatter($scope.houseNumber ? $scope.houseNumber.id : 0);
+                });
             }
         };
     }
