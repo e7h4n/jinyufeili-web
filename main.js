@@ -3,7 +3,8 @@
 
     window.app = angular.module('jinyufeili.web', [
         'ngRoute',
-        'ngResource'
+        'ngResource',
+        'angular-google-analytics'
     ]);
 
     $.getJSON('/api/wechat/js_signature', {

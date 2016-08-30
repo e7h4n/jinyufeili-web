@@ -3,5 +3,8 @@
   "description": "Web project based on angularjs and bootstrap",
   "license": "MIT",
   "repository": "git://github.com/perfectworks/jinyufeili-web",
-  "version": "0.1.0"
+  "version": "0.1.0",
+  "dependencies": {
+    "angular-google-analytics": "^1.1.7"
+  }
 }
