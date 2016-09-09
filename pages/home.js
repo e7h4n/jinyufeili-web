@@ -1,11 +1,34 @@
-'use strict';
+(function () {
+    var template = `
+        <div class="weui_cells_title">个人信息</div>
+        <user-info v-bind:user="user"></user-info>
+        <div class="weui_cells_title">以上信息仅业主个人可见</div>
+    `;
 
-app.controller('HomeCtrl', ['$scope', 'user', 'UserGroup', 'Poll', function ($scope, user, UserGroup, Poll) {
-    $scope.user = user;
-
-    $scope.userGroups = UserGroup.query();
-
-    $scope.polls = Poll.query({
-        'status[]': ['published']
+    var Home = Vue.extend({
+        template: template,
+        route: {
+            data: function () {
+                return {
+                    user: app.User.current().then(function (user) {
+                        if (!user.resident) {
+                            app.router.go({
+                                name: 'userBind',
+                                params: {
+                                    userId: user.id
+                                }
+                            });
+                        }
+                    })
+                };
+            }
+        }
     });
-}]);
+
+    app.router.map({
+        '/': {
+            name: 'home',
+            component: Home
+        }
+    });
+}());

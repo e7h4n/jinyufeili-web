@@ -5,6 +5,11 @@
   "repository": "git://github.com/perfectworks/jinyufeili-web",
   "version": "0.1.0",
   "dependencies": {
-    "angular-google-analytics": "^1.1.7"
+    "angular-google-analytics": "^1.1.7",
+    "axios": "^0.14.0",
+    "bluebird": "^3.4.6",
+    "vue": "^1.0.26",
+    "vue-router": "^0.7.13",
+    "vux": "^0.1.3"
   }
 }
