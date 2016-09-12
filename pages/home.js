@@ -11,14 +11,17 @@
             data: function () {
                 return {
                     user: app.User.current().then(function (user) {
-                        if (!user.resident) {
+                        if (!user.resident || !user.resident.id) {
                             app.router.go({
                                 name: 'userBind',
                                 params: {
                                     userId: user.id
                                 }
                             });
+                            return null;
                         }
+
+                        return user;
                     })
                 };
             }
