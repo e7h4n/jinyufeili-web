@@ -6,13 +6,13 @@ app.config(['$httpProvider', function ($httpProvider) {
         '$injector',
         '$timeout',
         'API_SERVER',
-        'ForbiddenException',
+        'UnauthorizedException',
         function (
             $q,
             $injector,
             $timeout,
             API_SERVER,
-            ForbiddenException
+            UnauthorizedException
         ) {
             return {
                 request: function (config) {
@@ -58,7 +58,7 @@ app.config(['$httpProvider', function ($httpProvider) {
                     }
 
                     if (resp.status === 401)  {
-                        throw new ForbiddenException();
+                        throw new UnauthorizedException();
                     } else if (resp.status === 403)  {
                         return $q.reject(resp);
                     } else {
@@ -68,10 +68,6 @@ app.config(['$httpProvider', function ($httpProvider) {
                             message = resp.data.exceptionMessage;
                         } else if (resp && resp.data && resp.data.message) {
                             message = resp.data.message;
-                        }
-
-                        if (resp.status === 500 && message !== null && message.indexOf && message.indexOf('CookieTheftException') !== -1) {
-                            throw new ForbiddenException();
                         }
 
                         $timeout(function () {

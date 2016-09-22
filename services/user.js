@@ -21,7 +21,7 @@ app.service('User', ['$resource', function ($resource) {
     });
 }]);
 
-app.service('CurrentUser', ['User', 'Loading', 'Unauthroized', function (User, Loading, Unauthroized) {
+app.service('CurrentUser', ['User', 'Loading', 'ForbiddenException', function (User, Loading, ForbiddenException) {
     var promise = User.current().$promise.then(function (user) {
         user.roles = user.groups.reduce(function (memo, curr) {
             memo[curr.name] = true;
@@ -34,7 +34,7 @@ app.service('CurrentUser', ['User', 'Loading', 'Unauthroized', function (User, L
 
     return promise.then(function (user) {
         if (!user.resident || !user.resident.id) {
-            throw new Unauthroized();
+            throw new ForbiddenException();
         }
         return user;
     });
