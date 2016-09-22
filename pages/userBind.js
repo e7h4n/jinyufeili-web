@@ -36,7 +36,7 @@
 
     app.router.map({
         '/users/:userId/bind': {
-            name: 'userBind',
+            name: 'user',
             component: User
         }
     });
