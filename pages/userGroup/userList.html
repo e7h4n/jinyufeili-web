@@ -1,0 +1,21 @@
+<div class="weui_cells_title">{{group.name}}业主列表</div>
+<div class="weui_cells weui_cells_access" ng-if="requestUser.roles['筹备组']">
+    <a class="weui_cell" href="#/users/{{ user.resident ? '' : '/bind?userId=' }}{{user.id}}" ng-repeat="user in users track by user.id">
+        <div class="weui_cell_bd weui_cell_primary">
+            <p>{{user.name}}</p>
+        </div>
+        <div class="weui_cell_ft">
+            {{user.resident.name}}
+        </div>
+    </a>
+</div>
+<div class="weui_cells" ng-if="!requestUser.roles['筹备组']">
+    <div class="weui_cell" href="#/users/{{ user.resident ? '' : '/bind?userId=' }}{{user.id}}" ng-repeat="user in users track by user.id">
+        <div class="weui_cell_bd weui_cell_primary">
+            <p>{{user.name}}</p>
+        </div>
+        <div class="weui_cell_ft">
+            {{user.resident.name}}
+        </div>
+    </div>
+</div>

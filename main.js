@@ -1,13 +1,37 @@
 (function () {
     'use strict';
 
-    Vue.component('group', vux.Group);
-    Vue.component('cell', vux.Cell);
-    Vue.component('address', vux.Address);
-    Vue.component('popup', vux.Popup);
-    Vue.component('picker', vux.Picker);
-    Vue.component('xInput', vux.XInput);
+    window.app = angular.module('jinyufeili.web', [
+        'ngRoute',
+        'ngResource',
+        'angular-google-analytics'
+    ]);
 
-    window.app = Vue.extend({});
-    app.router = new VueRouter();
+    $.getJSON('/api/wechat/js_signature', {
+        url: location.href
+    }, function (resp) {
+        window.wx.config({
+            appId: resp.appid,
+            timestamp: resp.timestamp,
+            nonceStr: resp.noncestr,
+            signature: resp.signature,
+            jsApiList: [
+                'onMenuShareTimeline',
+                'onMenuShareAppMessage',
+                'onMenuShareQQ',
+                'onMenuShareWeibo',
+                'onMenuShareQZone',
+                'getNetworkType',
+                'openLocation',
+                'getLocation',
+                'hideOptionMenu',
+                'showOptionMenu',
+                'hideMenuItems',
+                'showMenuItems',
+                'hideAllNonBaseMenuItem',
+                'showAllNonBaseMenuItem',
+                'closeWindow'
+            ]
+        });
+    });
 }());

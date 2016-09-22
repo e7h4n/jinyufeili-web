@@ -1,0 +1,49 @@
+<article class="weui_article" style="padding-bottom: 0px;">
+    <h1>{{ctrl.poll.name}}</h1>
+
+    <section ng-if="ctrl.poll.status === 'finished'">
+        本次投票已结束
+    </section>
+
+    <section>
+        <pre style="white-space: normal;">{{ ctrl.poll.desc }}</pre>
+    </section>
+</article>
+
+<div ng-if="ctrl.user.resident.id">
+    <div ng-if="ctrl.poll.status === 'finished'">
+        <div ng-if="ctrl.voteSheet.voted">
+            <div class="weui_cells_title">我的投票结果</div>
+            <div class="weui_cells" style="margin-top: 0px;">
+                <div class="weui_cell" ng-repeat="question in ctrl.voteSheet.questions">
+                    <div class="weui_cell_bd weui_cell_primary">
+                        <p>{{question.content}}</p>
+                    </div>
+                    <div class="weui_cell_ft">
+                        {{question.result | questionResult}}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div ng-if="ctrl.user.resident.id && (!ctrl.voteSheet.id || !ctrl.voteSheet.voted)">
+            <div class="weui_cells_title">我的投票结果: 未参与</div>
+        </div>
+    </div>
+</div>
+
+<form name="form" novalidate ng-submit="ctrl.submit()">
+    <div>
+        <div class="weui_cells_title">表决项</div>
+        <div class="weui_cells weui_cells_radio">
+            <div ng-repeat="question in ctrl.poll.questions track by question.id" class="weui_cell weui_cell_select weui_select_after">
+                <div class="weui_cell_bd weui_cell_primary">
+                    {{question.content}}
+                </div>
+                <div class="weui_cell_ft">
+                    <select name="question{{question.id}}" class="weui_select" ng-model="ctrl.formData.questionAnswer[question.id]" ng-options="answer.name for answer.value in ctrl.answers track by answer.value" required></select>
+                </div>
+            </div>
+        </div>
+    </div>
+

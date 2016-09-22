@@ -1,0 +1,8 @@
+<div class="weui_cell weui_cell_select weui_select_after" ng-show="unit">
+    <div class="weui_cell_hd">
+        <label for="" class="weui_label">门牌号</label>
+    </div>
+    <div class="weui_cell_bd weui_cell_primary">
+        <select class="weui_select" name="houseNumber" ng-model="houseNumber" ng-options="houseNumber.name for houseNumber in houseNumbers track by houseNumber.id" required></select>
+    </div>
+</div>

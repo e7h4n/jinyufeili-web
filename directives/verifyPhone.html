@@ -1,0 +1,23 @@
+<div>
+    <ng-form name="verifyCodeForm">
+        <div class="weui_cells weui_cells_form">
+            <div class="weui_cell">
+                <div class="weui_cell_hd"><label class="weui_label">手机号</label></div>
+                <div class="weui_cell_bd weui_cell_primary">
+                    <input class="weui_input" type="number" disabled value="{{phone}}" readonly style="color: #333">
+                </div>
+            </div>
+            <div class="weui_cell">
+                <div class="weui_cell_hd"><label class="weui_label">验证码</label></div>
+                <div class="weui_cell_bd weui_cell_primary">
+                    <input class="weui_input" type="number" placeholder="请输入4位数字验证码" ng-model="formData.verifyCode" pattern="\d{4}" required>
+                </div>
+            </div>
+        </div>
+        <div class="weui_cells_tips" ng-if="countdown">接收短信大约需要{{countdown}}秒</div>
+        <div class="weui_cells_tips" ng-if="!countdown">没收到短信? <a href="" ng-click="resend()">重新发送验证码</a></div>
+        <div class="weui_btn_area">
+            <button class="weui_btn weui_btn_primary" ng-disabled="!verifyCodeForm.$valid" ng-class="{weui_btn_disabled: !verifyCodeForm.$valid}" ng-click="submit()">提交</a>
+        </div>
+    </ng-form>
+</div>

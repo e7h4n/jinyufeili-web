@@ -12,10 +12,12 @@
             s.parentNode.insertBefore(hm, s);
         })();
         </script>
-        <style>template { display: none; }</style>
-        <link rel="stylesheet" href="node_modules/vux/dist/vux.css">
+        <link rel="stylesheet" href="https://res.wx.qq.com/open/libs/weui/0.4.2/weui.min.css"/>
+        <link rel="stylesheet" href="https://staticfile.qnssl.com/font-awesome/4.2.0/css/font-awesome.min.css"/>
     </head>
-    <body>
+    <body ontouchstart="">
+        <loading></loading>
+        <toast></toast>
         <div id="mainLoadingToast" class="weui_loading_toast">
             <div class="weui_mask_transparent"></div>
             <div class="weui_toast">
@@ -38,14 +40,15 @@
             </div>
         </div>
 
-        <router-view></router-view>
+        <div ng-view></div>
 
         <script src="https://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
-        <script src="node_modules/bluebird/js/browser/bluebird.min.js"></script>
-        <script src="node_modules/axios/dist/axios.min.js"></script>
-        <script src="node_modules/vue/dist/vue.min.js"></script>
-        <script src="node_modules/vue-router/dist/vue-router.min.js"></script>
-        <script src="node_modules/vux/dist/vux.js"></script>
+        <script src="https://staticfile.qnssl.com/zepto/1.1.6/zepto.min.js"></script>
+        <script src="https://staticfile.qnssl.com/angular.js/1.5.7/angular.min.js"></script>
+        <script src="https://staticfile.qnssl.com/angular.js/1.5.7/angular-route.min.js"></script>
+        <script src="https://staticfile.qnssl.com/angular.js/1.5.7/angular-resource.min.js"></script>
+        <script src="https://staticfile.qnssl.com/lodash.js/3.10.1/lodash.min.js"></script>
+        <script src="node_modules/angular-google-analytics/dist/angular-google-analytics.min.js"></script>
         <script src="app.js"></script>
     </body>
 </html>
