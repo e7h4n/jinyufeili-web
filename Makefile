@@ -5,5 +5,5 @@ build:
 	foolish-prefix --prefix https://static.jinyufeili.com/
 
 deploy: build
-	rsync -avzp dist/ bcc:~/online/static
+	rsync -avzp dist/ aws:~/online/static
 	qrsync qiniu_conf.json
