@@ -138,26 +138,6 @@ app.controller('SensorStationHomeCtrl', [
                 calcValue: sprintf.bind(null, '%d'),
                 calcBorderColor: cnColor
             }, {
-                data: dataMap['PM25_HOME'],
-                title: '质量指数(美标)',
-                calcDesc: function (val) {
-                    return AQI('us', val).level;
-                },
-                calcValue: function (val) {
-                    return AQI('us', val).aqi;
-                },
-                calcBorderColor: usColor
-            }, {
-                data: dataMap['PM25_HOME'],
-                title: '质量指数(国标)',
-                calcDesc: function (val) {
-                    return AQI('cn', val).level;
-                },
-                calcValue: function (val) {
-                    return AQI('cn', val).aqi;
-                },
-                calcBorderColor: cnColor
-            }, {
                 data: dataMap['TEMPERATURE_HOME'],
                 title: '温度',
                 calcValue: sprintf.bind(null, '%.1f'),
@@ -167,13 +147,6 @@ app.controller('SensorStationHomeCtrl', [
                 title: '湿度',
                 calcValue: sprintf.bind(null, '%.1f'),
                 unit: '%'
-            }, {
-                data: dataMap['PRESSURE_HOME'],
-                title: '大气压',
-                calcValue: function (value) {
-                    return Math.round(value) / 100;
-                },
-                unit: 'hPa'
             }, {
                 data: dataMap['CO2_HOME'],
                 title: '二氧化碳',
@@ -187,7 +160,14 @@ app.controller('SensorStationHomeCtrl', [
                 calcValue: function (value) {
                     return Math.round(value / 10) / 100;
                 },
-                unit: 'ppm'
+                unit: '毫克/立方米'
+            }, {
+                data: dataMap['PRESSURE_HOME'],
+                title: '大气压',
+                calcValue: function (value) {
+                    return Math.round(value) / 100;
+                },
+                unit: 'hPa'
             }]
         }, {
             title: '奥体中心',
