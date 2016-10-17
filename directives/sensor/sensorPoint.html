@@ -1,0 +1,15 @@
+<div class="data" style="border-right-color: {{borderColor}}">
+    <div class="label">{{title}}</div>
+    <div class="value-left">
+        <div ng-if="!expired">{{desc}}</div>
+        <div ng-if="expired" style="color: #CCC">数据过期</div>
+    </div>
+    <div class="value-right">
+        <div ng-if="!expired">
+            {{value}}
+        </div>
+        <div ng-if="expired" style="color: #CCC">
+            {{data.timestamp | date:'yyyy-MM-dd HH:mm'}}
+        </div>
+    </div>
+</div>

@@ -57,6 +57,12 @@ app.config(['$routeProvider', function ($routeProvider) {
         controllerAs: 'ctrl',
         resolve: resolve
     }).
+    when('/sensor-station', {
+        templateUrl: 'pages/sensorStation/sensorStationHome.html',
+        resolve: resolve,
+        controller: 'SensorStationHomeCtrl',
+        controllerAs: 'ctrl'
+    }).
     when('/errors/:code', {
         templateUrl: 'pages/error.html',
         controller: 'ErrorCtrl',
