@@ -8,6 +8,7 @@ app.directive('sensorPoint', [
                 data: '=point',
                 unit: '=',
                 title: '=',
+                neverExpire: '=',
                 calcValue: '=',
                 calcBorderColor: '=',
                 calcDesc: '='
@@ -16,7 +17,7 @@ app.directive('sensorPoint', [
                 var expiredDuration = 15 * 60 * 1000; // data expires in 15 minute
 
                 $scope.$watch('data.timestamp', function (timestamp) {
-                    $scope.expired = Date.now() - timestamp > expiredDuration;
+                    $scope.expired = !$scope.neverExpire && (Date.now() - timestamp > expiredDuration);
                 });
 
                 $scope.$watchGroup(['expired', 'data.value'], function (groups) {

@@ -112,7 +112,8 @@ app.controller('SensorStationHomeCtrl', [
             'HUMIDITY_HOME',
             'PRESSURE_HOME',
             'CO2_HOME',
-            'FORMALDEHYDE_HOME'
+            'FORMALDEHYDE_HOME',
+            'PM25_OFFICIAL'
         ];
 
         var dataPromises = [];
@@ -189,7 +190,17 @@ app.controller('SensorStationHomeCtrl', [
                 unit: 'ppm'
             }]
         }, {
-            title: '翡丽铂庭户外',
+            title: '奥体中心',
+            dataPoints: [{
+                data: dataMap['PM25_OFFICIAL'],
+                title: 'PM2.5 浓度',
+                unit: '微克/立方米',
+                calcValue: sprintf.bind(null, '%d'),
+                calcBorderColor: cnColor,
+                neverExpire: true
+            }]
+        }, {
+            title: '小区户外',
             dataPoints: [{
                 data: dataMap['PM25'],
                 title: 'PM2.5 浓度',

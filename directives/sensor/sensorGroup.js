@@ -21,6 +21,8 @@ app.directive('sensorGroup', [
                     }).filter(function (d) {
                         return d > 0;
                     }));
+
+                    $scope.elapsedTime = Math.round((Date.now() - $scope.latestTime) / 60 / 1000);
                 });
             }
         };

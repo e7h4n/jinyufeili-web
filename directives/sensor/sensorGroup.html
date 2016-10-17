@@ -1,7 +1,7 @@
 <div class="sensor-station" ng-if="latestTime > 0">
     <div class="sensor-station-title">
         <div class="title-right">
-            {{latestTime | date:'yyyy-MM-dd HH:mm'}}
+            {{elapsedTime}} 分钟前更新
         </div>
         <div class="title-left">
             {{title}}
@@ -13,6 +13,7 @@
              point="dataPoint.data"
              unit="dataPoint.unit"
              title="dataPoint.title"
+             never-expire="dataPoint.neverExpire"
              calc-value="dataPoint.calcValue"
              calc-border-color="dataPoint.calcBorderColor"
              calc-desc="dataPoint.calcDesc"></sensor-point>
