@@ -12,12 +12,9 @@ app.service('SensorDataPoint', [
                 isArray: true
             },
             getByType: {
-                url: '/api/sensor/data-points/:type?limit=1',
+                url: '/api/sensor/data-points/:type/latest',
                 method: 'GET',
-                isArray: false,
-                transformResponse: function (data) {
-                    return JSON.parse(data)[0];
-                }
+                isArray: false
             }
         });
     }

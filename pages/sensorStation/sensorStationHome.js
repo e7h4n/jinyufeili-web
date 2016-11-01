@@ -135,7 +135,7 @@ app.controller('SensorStationHomeCtrl', [
                 data: dataMap['PM25_HOME'],
                 title: 'PM2.5 浓度',
                 unit: '微克/立方米',
-                calcValue: sprintf.bind(null, '%d'),
+                calcValue: Math.round.bind(Math),
                 calcBorderColor: cnColor
             }, {
                 data: dataMap['TEMPERATURE_HOME'],
@@ -175,7 +175,7 @@ app.controller('SensorStationHomeCtrl', [
                 data: dataMap['PM25_OFFICIAL'],
                 title: 'PM2.5 浓度',
                 unit: '微克/立方米',
-                calcValue: sprintf.bind(null, '%d'),
+                calcValue: Math.round.bind(Math),
                 calcBorderColor: cnColor,
                 neverExpire: true
             }]
@@ -185,7 +185,7 @@ app.controller('SensorStationHomeCtrl', [
                 data: dataMap['PM25'],
                 title: 'PM2.5 浓度',
                 unit: '微克/立方米',
-                calcValue: sprintf.bind(null, '%d'),
+                calcValue: Math.round.bind(Math),
                 calcBorderColor: cnColor
             }, {
                 data: dataMap['PM25'],
