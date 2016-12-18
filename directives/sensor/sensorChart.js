@@ -6,6 +6,10 @@ app.directive('sensorChart', [
     'AQI',
     function (SensorDataPoint, $q, AQI) {
         function getColor(value) {
+            if (!value) {
+                return '#55C4F5';
+            }
+
             var data = AQI('cn', value).aqi;
 
             if (data < 50) {
