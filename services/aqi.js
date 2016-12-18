@@ -9,7 +9,7 @@ app.service('AQI', function () {
             '65': [150, '不健康'],
             '150': [200, '非常不健康'],
             '250': [300, '危险'],
-            'max': [500]
+            '500': [500]
         },
         cn: {
             '0': [0, '优'],
@@ -19,7 +19,7 @@ app.service('AQI', function () {
             '150': [200, '重度污染'],
             '250': [300, '严重污染'],
             '350': [400, '严重污染'],
-            'max': [500]
+            '500': [500]
         }
     };
 
@@ -27,7 +27,7 @@ app.service('AQI', function () {
         var paramAqi = aqiStandards[standard];
 
         var concentrationLevels = Object.keys(paramAqi).map(function (key) {
-            return key === 'max' ? Infinity : parseInt(key, 10);
+            return parseInt(key, 10);
         });
 
         for (var i = 0; i < concentrationLevels.length - 1; i++) {
@@ -44,5 +44,7 @@ app.service('AQI', function () {
                 };
             }
         }
+
+        return 500;
     };
 });
