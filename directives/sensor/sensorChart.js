@@ -63,19 +63,33 @@ app.directive('sensorChart', [
                     statisticsType: 'HOURLY'
                 });
 
+                var homePM25Points = SensorDataPoint.queryByType({
+                    type: 'PM25_HOME',
+                    startTime: startTime,
+                    endTime: endTime + 1,
+                    statisticsType: 'HOURLY'
+                });
+
                 var chartElem = $($elem[0]).find('.chart')[0];
                 $(chartElem).height(window.innerHeight / 2);
 
-                $q.all([pm25Points.$promise, officialPM25Points.$promise]).then(function (rets) {
+                $q.all([pm25Points.$promise, officialPM25Points.$promise, homePM25Points.$promise.catch(function (xhr) {
+                    xhr.processed();
+                    return [];
+                })]).then(function (rets) {
                     var pm25Points = _.sortBy(rets[0], function (point) {
                         return point.timestamp;
                     });
                     var officialPM25Points = _.sortBy(rets[1], function (point) {
                         return point.timestamp;
                     });
+                    var homePM25Points = _.sortBy(rets[2], function (point) {
+                        return point.timestamp;
+                    });
 
                     var i = 0;
                     var j = 0;
+                    var k = 0;
                     commonTimes.forEach(function (time, index) {
                         if (pm25Points[i] && pm25Points[i].timestamp !== time) {
                             pm25Points.splice(i, 0, {
@@ -92,9 +106,58 @@ app.directive('sensorChart', [
                             });
                         }
                         j++;
+
+                        if (homePM25Points[k] && homePM25Points[k].timestamp !== time) {
+                            homePM25Points.splice(k, 0, {
+                                timestamp: time,
+                                value: k === 0 ? 0 : homePM25Points[k - 1].value
+                            });
+                        }
+                        k++;
                     });
 
                     commonTimes.sort();
+                    var series = [{
+                        name: '铂庭二区',
+                        animation: false,
+                        data: pm25Points.map(function (point) {
+                            return {
+                                y: Math.round(point.value),
+                                color: getColor(point.value)
+                            };
+                        }),
+                        dataLabels: {
+                            type: 'column',
+                            enabled: true,
+                            rotation: -90,
+                            color: '#FFFFFF',
+                            inside: true
+                        }
+                    }, {
+                        name: '奥体中心',
+                        animation: false,
+                        type: 'spline',
+                        data: officialPM25Points.map(function (point) {
+                            return Math.round(point.value);
+                        }),
+                        dataLabels: {
+                            enabled: true
+                        }
+                    }];
+
+                    if (homePM25Points.length) {
+                        series.push({
+                            name: '家',
+                            animation: false,
+                            type: 'spline',
+                            data: homePM25Points.map(function (point) {
+                                return Math.round(point.value);
+                            }),
+                            dataLabels: {
+                                enabled: true
+                            }
+                        });
+                    }
 
                     new Highcharts.Chart({
                         chart: {
@@ -135,33 +198,7 @@ app.directive('sensorChart', [
                         tooltip: {
                             shared: true
                         },
-                        series: [{
-                            name: '铂庭二区',
-                            animation: false,
-                            data: pm25Points.map(function (point) {
-                                return {
-                                    y: Math.round(point.value),
-                                    color: getColor(point.value)
-                                };
-                            }),
-                            dataLabels: {
-                                type: 'column',
-                                enabled: true,
-                                rotation: -90,
-                                color: '#FFFFFF',
-                                inside: true
-                            }
-                        }, {
-                            name: '奥体中心',
-                            animation: false,
-                            type: 'spline',
-                            data: officialPM25Points.map(function (point) {
-                                return Math.round(point.value);
-                            }),
-                            dataLabels: {
-                                enabled: true
-                            }
-                        }]
+                        series: series
                     });
                 });
             }
