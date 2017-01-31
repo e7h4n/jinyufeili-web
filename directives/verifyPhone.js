@@ -37,7 +37,7 @@ app.directive('verifyPhone', [
                     cancelPromise = $timeout(countdown, 100);
 
                     var sendPromise = $http.post('/api/send-verify-code?mobilePhone=' + $scope.phone);
-                    Loading.info('请稍后...', sendPromise);
+                    Loading.info('正在发送验证码...', sendPromise);
 
                     sendPromise.then(function () {
                         Toast.info('已发送');
