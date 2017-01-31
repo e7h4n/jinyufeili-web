@@ -6,7 +6,8 @@ app.controller('CurrentUserBindCtrl', [
     'REGION',
     '$scope',
     'Toast',
-    function (User, $routeParams, REGION, $scope, Toast) {
+    'Loading',
+    function (User, $routeParams, REGION, $scope, Toast, Loading) {
         var ctx = this;
 
         ctx.regions = REGION;
@@ -30,6 +31,8 @@ app.controller('CurrentUserBindCtrl', [
             var promise = ctx.user.$save({
                 verifyCode: verifyCode
             });
+
+            Loading.info('正在验证...', promise);
 
             promise.catch(function (xhr) {
                 if (xhr.status === 409) {
