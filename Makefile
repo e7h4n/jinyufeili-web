@@ -1,8 +1,5 @@
 build:
-	foolish-angular
-	foolish
-	foolish-rev
-	foolish-prefix --prefix https://static.jinyufeili.com/
+	ng build -prod --deploy-url=//static.jinyufeili.com/
 
 deploy: build
 	rsync -avzp dist/ aws:~/online/static
