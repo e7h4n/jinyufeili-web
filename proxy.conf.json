@@ -1,0 +1,6 @@
+{
+  "/api": {
+    "target": "https://m.jinyufeili.com",
+    "secure": true
+  }
+}
